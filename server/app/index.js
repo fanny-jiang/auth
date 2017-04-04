@@ -39,14 +39,15 @@ app.use('/api', function (req, res, next) {
 
 app.use('/api', require('../api/api.router'));
 
-app.post('/login', function(req, res, next){
+app.post('/login', function (req, res, next) {
+  console.log('HIT LOGIN POST');
   User.findOne({
     where: req.body
-  }).then(function(user){
-    if(user){
+  }).then(function (user) {
+    if (user) {
       req.session.userId = user.id;
       res.sendStatus(200);
-    }else{
+    } else {
       res.sendStatus(401);
     }
   }).catch(next);

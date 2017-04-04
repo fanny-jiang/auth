@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import { setUser } from '../redux/login';
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -26,13 +27,13 @@ class Login extends React.Component {
               />
             </div>
             <div className="form-group">
-                <label>password</label>
-                <input
-                  name="password"
-                  type="password"
-                  className="form-control"
-                  required
-                />
+              <label>password</label>
+              <input
+                name="password"
+                type="password"
+                className="form-control"
+                required
+              />
             </div>
             <button type="submit" className="btn btn-block btn-primary">{message}</button>
           </form>
@@ -60,13 +61,23 @@ class Login extends React.Component {
   onLoginSubmit(event) {
     const { message } = this.props;
     event.preventDefault();
-    console.log(`${message} isn't implemented yet`);
+    const user = {
+      email: event.target.email.value,
+      password: event.target.password.value
+    };
+    this.props.setUser(user);
+    console.log(user, 'from container');
+    console.log('props from container', this.props);
   }
+
+  // after the user inputs email and password, clicks login, they should be see either a success or not success
+  // click button axios will hit the /login post request
+
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
 const mapState = () => ({ message: 'Log in' });
-const mapDispatch = null;
+const mapDispatch = { setUser };
 
 export default connect(mapState, mapDispatch)(Login);

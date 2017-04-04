@@ -24243,9 +24243,13 @@
 	
 	var _stories2 = _interopRequireDefault(_stories);
 	
+	var _login = __webpack_require__(321);
+	
+	var _login2 = _interopRequireDefault(_login);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.default = (0, _redux.combineReducers)({ users: _users2.default, stories: _stories2.default });
+	exports.default = (0, _redux.combineReducers)({ users: _users2.default, stories: _stories2.default, login: _login2.default });
 
 /***/ },
 /* 218 */
@@ -32014,6 +32018,8 @@
 	
 	var _reactRouter = __webpack_require__(246);
 	
+	var _login = __webpack_require__(321);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32130,8 +32136,18 @@
 	      var message = this.props.message;
 	
 	      event.preventDefault();
-	      console.log(message + ' isn\'t implemented yet');
+	      var user = {
+	        email: event.target.email.value,
+	        password: event.target.password.value
+	      };
+	      this.props.setUser(user);
+	      console.log(user, 'from container');
+	      console.log('props from container', this.props);
 	    }
+	
+	    // after the user inputs email and password, clicks login, they should be see either a success or not success
+	    // click button axios will hit the /login post request
+	
 	  }]);
 	
 	  return Login;
@@ -32142,7 +32158,7 @@
 	var mapState = function mapState() {
 	  return { message: 'Log in' };
 	};
-	var mapDispatch = null;
+	var mapDispatch = { setUser: _login.setUser };
 	
 	exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Login);
 
@@ -50522,6 +50538,62 @@
 	
 	exports.default = ContentEditable;
 	module.exports = exports['default'];
+
+/***/ },
+/* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setUser = undefined;
+	exports.default = reducer;
+	
+	var _axios = __webpack_require__(219);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/* -----------------    ACTIONS     ------------------ */
+	
+	var SET_CURRENT_USER = 'SET_CURRENT_USER';
+	
+	/* ------------   ACTION CREATORS     ------------------ */
+	
+	var setCurrentUser = function setCurrentUser(user) {
+	  return { type: SET_CURRENT_USER, user: user };
+	};
+	
+	/* ------------       REDUCERS     ------------------ */
+	
+	function reducer() {
+	  var user = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case SET_CURRENT_USER:
+	      return action.user;
+	
+	    default:
+	      return user;
+	  }
+	}
+	
+	/* ------------       DISPATCHERS     ------------------ */
+	
+	var setUser = exports.setUser = function setUser(user) {
+	  return function (dispatch) {
+	    console.log('from axios post request');
+	    _axios2.default.post('/login', user).then(function (res) {
+	      return dispatch(setCurrentUser(res.data));
+	    }).catch(function (err) {
+	      return console.error('error is in the post axios request', err);
+	    });
+	  };
+	};
 
 /***/ }
 /******/ ]);
