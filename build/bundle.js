@@ -32141,8 +32141,6 @@
 	        password: event.target.password.value
 	      };
 	      this.props.setUser(user);
-	      console.log(user, 'from container');
-	      console.log('props from container', this.props);
 	    }
 	
 	    // after the user inputs email and password, clicks login, they should be see either a success or not success
@@ -32181,6 +32179,8 @@
 	var _reactRedux = __webpack_require__(178);
 	
 	var _reactRouter = __webpack_require__(246);
+	
+	var _login = __webpack_require__(321);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32298,7 +32298,11 @@
 	      var message = this.props.message;
 	
 	      event.preventDefault();
-	      console.log(message + ' isn\'t implemented yet');
+	      var user = {
+	        email: event.target.email.value,
+	        password: event.target.password.value
+	      };
+	      this.props.signUp(user);
 	    }
 	  }]);
 	
@@ -32310,7 +32314,7 @@
 	var mapState = function mapState() {
 	  return { message: 'Sign up' };
 	};
-	var mapDispatch = null;
+	var mapDispatch = { signUp: _login.signUp };
 	
 	exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Signup);
 
@@ -50548,7 +50552,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setUser = undefined;
+	exports.signUp = exports.setUser = undefined;
 	exports.default = reducer;
 	
 	var _axios = __webpack_require__(219);
@@ -50560,11 +50564,15 @@
 	/* -----------------    ACTIONS     ------------------ */
 	
 	var SET_CURRENT_USER = 'SET_CURRENT_USER';
+	var USER_SIGNUP = 'USER_SIGNUP';
 	
 	/* ------------   ACTION CREATORS     ------------------ */
 	
 	var setCurrentUser = function setCurrentUser(user) {
 	  return { type: SET_CURRENT_USER, user: user };
+	};
+	var userSignUp = function userSignUp(user) {
+	  return { type: USER_SIGNUP, user: user };
 	};
 	
 	/* ------------       REDUCERS     ------------------ */
@@ -50576,6 +50584,8 @@
 	  switch (action.type) {
 	    case SET_CURRENT_USER:
 	      return action.user;
+	    case USER_SIGNUP:
+	      return action.user;
 	
 	    default:
 	      return user;
@@ -50586,11 +50596,20 @@
 	
 	var setUser = exports.setUser = function setUser(user) {
 	  return function (dispatch) {
-	    console.log('from axios post request');
 	    _axios2.default.post('/login', user).then(function (res) {
 	      return dispatch(setCurrentUser(res.data));
 	    }).catch(function (err) {
 	      return console.error('error is in the post axios request', err);
+	    });
+	  };
+	};
+	
+	var signUp = exports.signUp = function signUp(user) {
+	  return function (dispatch) {
+	    _axios2.default.post('/signup', user).then(function (res) {
+	      return dispatch(userSignUp(res.data));
+	    }).catch(function (err) {
+	      return console.error('Error on Signup Axios Req', err);
 	    });
 	  };
 	};

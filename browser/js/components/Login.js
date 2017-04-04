@@ -66,8 +66,6 @@ class Login extends React.Component {
       password: event.target.password.value
     };
     this.props.setUser(user);
-    console.log(user, 'from container');
-    console.log('props from container', this.props);
   }
 
   // after the user inputs email and password, clicks login, they should be see either a success or not success
