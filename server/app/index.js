@@ -63,6 +63,11 @@ app.post('/signup', function (req, res, next) {
   }).catch(next);
 });
 
+app.get('/logout', function(req, res, next){
+  req.session.userId = null;
+  res.status(200).send('You have logged out');
+});
+
 var validFrontendRoutes = ['/', '/stories', '/users', '/stories/:id', '/users/:id', '/signup', '/login'];
 var indexPath = path.join(__dirname, '..', '..', 'browser', 'index.html');
 validFrontendRoutes.forEach(function (stateRoute) {
