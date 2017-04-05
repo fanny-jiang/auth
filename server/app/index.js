@@ -45,7 +45,8 @@ app.post('/login', function (req, res, next) {
   }).then(function (user) {
     if (user) {
       req.session.userId = user.id;
-      res.sendStatus(200);
+      req.session.admin = user.isAdmin;
+      res.status(200).send(user);
     } else {
       res.sendStatus(401);
     }
@@ -63,7 +64,7 @@ app.post('/signup', function (req, res, next) {
   }).catch(next);
 });
 
-app.get('/logout', function(req, res, next){
+app.get('/logout', function (req, res, next) {
   req.session.userId = null;
   res.status(200).send('You have logged out');
 });

@@ -8,8 +8,19 @@ import { setUser } from '../redux/login';
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    // this.state = {
+    //   user: {},
+    //   isAdmin: ''
+    // }
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
   }
+
+  // componentWillReceiveProps(newProps, oldProps) {
+  //   this.setState({
+  //     user: newProps.user,
+  //     isAdmin: newProps.user.isAdmin
+  //   })
+  // }
 
   render() {
     const { message } = this.props;
@@ -60,6 +71,7 @@ class Login extends React.Component {
 
   onLoginSubmit(event) {
     const { message } = this.props;
+    console.log('this.props from Login', this.props)
     event.preventDefault();
     const user = {
       email: event.target.email.value,
@@ -75,7 +87,10 @@ class Login extends React.Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = () => ({ message: 'Log in' });
+const mapState = ({ login }) => ({
+  login,
+  message: 'Log in'
+});
 const mapDispatch = { setUser };
 
 export default connect(mapState, mapDispatch)(Login);

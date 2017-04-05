@@ -8,12 +8,12 @@ import { removeStory } from '../../redux/stories';
 
 class UserItem extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.removeUserCallback = this.removeUserCallback.bind(this);
   }
 
-  render () {
+  render() {
     const { user } = this.props;
     return (
       <div className="list-group-item min-content user-item">
@@ -37,8 +37,9 @@ class UserItem extends React.Component {
           </Link>
           <div className="media-right media-middle">
             <button
-                className="btn btn-default"
-                onClick={this.removeUserCallback}>
+              className="btn btn-default"
+              disabled="true"
+              onClick={this.removeUserCallback}>
               <span className="glyphicon glyphicon-remove" />
             </button>
           </div>
@@ -47,7 +48,7 @@ class UserItem extends React.Component {
     );
   }
 
-  removeUserCallback (event) {
+  removeUserCallback(event) {
     const { removeUser, removeStory, user, stories } = this.props;
     event.stopPropagation();
     removeUser(user.id);

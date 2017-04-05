@@ -33,18 +33,20 @@ export default function reducer(user = {}, action) {
 
 export const setUser = user => dispatch => {
   axios.post('/login', user)
-    .then(res => dispatch(setCurrentUser(res.data)))
+    .then(res => {
+      dispatch(setCurrentUser(res.data))
+    })
     .catch(err => console.error('error is in the post axios request', err));
 };
 
 export const signUp = user => dispatch => {
   axios.post('/signup', user)
-  .then(res => dispatch(userSignUp(res.data)))
-  .catch(err => console.error('Error on Signup Axios Req', err));
+    .then(res => dispatch(userSignUp(res.data)))
+    .catch(err => console.error('Error on Signup Axios Req', err));
 };
 
 export const logout = user => dispatch => {
   axios.get('/logout', user)
-  .then(res => dispatch(userLogout(res.data)))
-  .then(browserHistory.push('/'));
+    .then(res => dispatch(userLogout(res.data)))
+    .then(browserHistory.push('/'));
 };
